@@ -1,25 +1,24 @@
-// Styles
-import './App.css'
-
-// React
-import { useState } from 'react'
-
 //Components
 import Header from './Components/Header'
 import Footer from './Components/Footer'
 import Main from './Components/Main'
+import { Container } from 'react-bootstrap'
 
+
+/** App component is the main wrapper for all other components
+ * see src/Components for other components used in App
+ */
 function App() {
   
-  const [author, setAuthor] = useState('Josh')
-  const [title, setTitle] = useState('Horned Beasts')
+  const author = 'Josh Cannon';
+  const title = 'Horned Beasts';
 
   return (
-    <div className='App'>
+    <Container>
       <Header title={title} />
       <Main />
       <Footer author={author} />
-    </div>
+    </Container>
   )
 }
 
