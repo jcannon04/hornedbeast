@@ -2,23 +2,31 @@
 import { useState } from 'react'
 
 // Bootstrap Components
-import Modal from 'react-bootstrap/Modal'
 import Card from 'react-bootstrap/Card'
 
 /**
- * Horned Beast component creates all horned beast cards and modals
- * uses beast info as props passed from Main components to generate both
+ * Horned Beast component creates all horned beast cards
+ * uses beast info as props passed from Main components to generate
  */
-export default function HornedBeast({ title, imgUrl, description }) {
-  const [favorites, setFavorites] = useState(0)
+export default function HornedBeast({
+  beast,
+  title,
+  imgUrl,
+  description,
+  selectBeast,
+}) {
+  // getting number of favorites  from local storage when component is rendered
+  let savedFavorite = parseInt(localStorage.getItem(beast.title)) || 0
+  const [favorites, setFavorites] = useState(savedFavorite)
 
-  const [show, setShow] = useState(false)
-
-  const handleClose = () => setShow(false)
-  const handleShow = () => setShow(true)
-
+  // click on picture to change state in App and render Modal
   let handlePictureClick = (e) => {
+    selectBeast(beast)
+  }
+  // click heart to add 1 to favorite counter
+  let handleHeartClick = () => {
     setFavorites(favorites + 1)
+    localStorage.setItem(beast.title, favorites)
   }
 
   return (
@@ -31,19 +39,12 @@ export default function HornedBeast({ title, imgUrl, description }) {
           onClick={handlePictureClick}
           style={{ width: '18rem', height: 'auto' }}
         />
-        <p>&hearts; {favorites}</p>
-        <Card.Body onClick={handleShow}>
+        <p onClick={handleHeartClick}>&hearts; {favorites}</p>
+        <Card.Body>
           <Card.Title>{title}</Card.Title>
           <Card.Text>{description}</Card.Text>
         </Card.Body>
       </Card>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{description}</Modal.Body>
-      </Modal>
     </>
   )
 }
